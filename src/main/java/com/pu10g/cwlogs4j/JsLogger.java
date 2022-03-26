@@ -35,6 +35,8 @@ public class JsLogger {
                 .collect(Collectors.joining("\n"));
         var userAgent = Optional.ofNullable(request.getHeader("User-Agent"))
                 .orElse("unknown");
+        var url = Optional.ofNullable(request.getParameter("url"))
+                .orElse("unknown");
 
         var regionId = getResourceValue.apply("aws.cloudwatch.logs.region");
         var logGroupName = getResourceValue.apply("aws.cloudwatch.logs.group");
@@ -54,7 +56,7 @@ public class JsLogger {
 
         try {
             InputLogEvent inputLogEvent = InputLogEvent.builder()
-                    .message(json.writeValueAsString(new LogModel(level, message, userAgent)))
+                    .message(json.writeValueAsString(new LogModel(level, message, userAgent, url)))
                     .timestamp(timestamp)
                     .build();
             var putLogEventsRequest = PutLogEventsRequest.builder()
@@ -111,11 +113,14 @@ public class JsLogger {
         public String message;
         @JsonProperty("UserAgent")
         public String userAgent;
+        @JsonProperty("Url")
+        public String url;
 
-        public LogModel(String level, String message, String userAgent) {
+        public LogModel(String level, String message, String userAgent, String url) {
             this.logLevel = level;
             this.message = message;
             this.userAgent = userAgent;
+            this.url = url;
         }
     }
 
@@ -130,7 +135,7 @@ public class JsLogger {
         @JsonProperty("Namespace")
         public final String namespace = "JsLog";
         @JsonProperty("Dimensions")
-        public final List<String> dimensions = List.of("LogLevel", "Message", "UserAgent");
+        public final List<String> dimensions = List.of("LogLevel", "Message", "UserAgent", "URL");
         @JsonProperty("Metrics")
         public final List<Metrics> metricises = List.of();
     }
