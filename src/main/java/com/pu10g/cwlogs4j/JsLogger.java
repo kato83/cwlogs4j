@@ -105,9 +105,17 @@ public class JsLogger {
     public static class LogModel {
         @JsonProperty("_aws")
         public Aws aws;
+        @JsonProperty("LogLevel")
+        public String logLevel;
+        @JsonProperty("Message")
+        public String message;
+        @JsonProperty("UserAgent")
+        public String userAgent;
 
         public LogModel(String level, String message, String userAgent) {
-            this.aws = new Aws(level, message, userAgent);
+            this.logLevel = level;
+            this.message = message;
+            this.userAgent = userAgent;
         }
     }
 
@@ -116,18 +124,6 @@ public class JsLogger {
         public String timeStamp = String.valueOf(System.currentTimeMillis());
         @JsonProperty("CloudWatchMetrics")
         public List<CloudWatchMetrics> cloudWatchMetricises = List.of(new CloudWatchMetrics());
-        @JsonProperty("LogLevel")
-        public String logLevel;
-        @JsonProperty("Message")
-        public String message;
-        @JsonProperty("UserAgent")
-        public String userAgent;
-
-        public Aws(String level, String message, String userAgent) {
-            this.logLevel = level;
-            this.message = message;
-            this.userAgent = userAgent;
-        }
     }
 
     private static class CloudWatchMetrics {
