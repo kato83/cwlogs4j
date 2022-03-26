@@ -36,6 +36,10 @@ dependencies {
 
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 tomcat {
     httpProtocol = 'org.apache.coyote.http11.Http11Nio2Protocol'
     ajpProtocol = 'org.apache.coyote.ajp.AjpNio2Protocol'
