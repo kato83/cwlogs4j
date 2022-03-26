@@ -54,7 +54,7 @@ public class JsLogger {
 
         try {
             InputLogEvent inputLogEvent = InputLogEvent.builder()
-                    .message(json.writeValueAsString(new Aws(level, message, userAgent)))
+                    .message(json.writeValueAsString(new LogModel(level, message, userAgent)))
                     .timestamp(timestamp)
                     .build();
             var putLogEventsRequest = PutLogEventsRequest.builder()
