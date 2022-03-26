@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'idea'
+    id 'com.bmuschko.tomcat' version '2.7.0'
+}
+
+group 'com.pu10g'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform('software.amazon.awssdk:bom:2.17.157')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    implementation 'software.amazon.awssdk:cloudwatch'
+    implementation 'software.amazon.awssdk:cloudwatchlogs'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+
+    def tomcatVersion = '9.0.1'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:9.0.0.M6",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
+    annotationProcessor 'com.fasterxml.jackson.core:jackson-databind:2.12.6'
+
+}
+
+tomcat {
+    httpProtocol = 'org.apache.coyote.http11.Http11Nio2Protocol'
+    ajpProtocol = 'org.apache.coyote.ajp.AjpNio2Protocol'
+    contextPath = '/'
+}
+
+war {
+    archiveName 'ROOT.war'
+}
+
+test {
+    useJUnitPlatform()
+}
