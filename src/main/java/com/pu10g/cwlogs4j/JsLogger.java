@@ -104,7 +104,7 @@ public class JsLogger {
 
     public static class LogModel {
         @JsonProperty("_aws")
-        public Aws aws;
+        public Aws aws = new Aws();
         @JsonProperty("LogLevel")
         public String logLevel;
         @JsonProperty("Message")
